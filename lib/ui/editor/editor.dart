@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 import '../../providers/editor_image_provider.dart';
 import '../../providers/post_provider.dart';
@@ -38,8 +39,6 @@ class _BuildEditorState extends State<BuildEditor> {
 
   Future<String> preview;
   String data;
-
-
 
   @override
   Widget build(BuildContext context) {

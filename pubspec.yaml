@@ -20,6 +20,8 @@ dependencies:
   device_preview: ^0.4.5
   auto_size_text: ^2.1.0
   responsive_framework: ^0.0.7
+  markdown_widget: ^1.2.0
+
 
 
 
