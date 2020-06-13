@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:markdown_widget/markdown_widget.dart' as TOC;
 
 import '../../model/post.dart';
 import '../../constants/urls.dart';
@@ -9,7 +10,8 @@ import '../../providers/post_provider.dart';
 
 class BlogScreen extends StatelessWidget {
   final String blogId;
-  final controller = ScrollController();
+  //final controller = ScrollController();
+  final TOC.TocController controller = TOC.TocController();
 
   BlogScreen(this.blogId);
 
@@ -26,11 +28,26 @@ class BlogScreen extends StatelessWidget {
           if (snapshot.hasData) {
             print("http://127.0.0.1:8000/images/post_images/" +
                 '${snapshot.data.user}/${snapshot.data.id}/');
-            return Markdown(
-              controller: controller,
-              imageDirectory:
-                  Urls.imageUrl + '${snapshot.data.user}/${snapshot.data.id}/',
-              data: snapshot.data.description,
+            return Row(
+              children: [
+                Expanded(
+                  child: TOC.TocListWidget(controller: controller),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: TOC.MarkdownWidget(
+                    data: snapshot.data.description,
+                    controller: controller,
+                    styleConfig: TOC.StyleConfig(
+                      imgBuilder: (String url, attributes) {
+                        return Image.network(Urls.imageUrl +
+                            '${snapshot.data.user}/${snapshot.data.id}/' +
+                            url);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           } else
             return CircularProgressIndicator();

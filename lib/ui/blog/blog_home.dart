@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/post.dart';
+import '../../utils/api/api_calls.dart';
 import '../../widgets/network_error.dart';
 import '../../providers/post_provider.dart';
 
@@ -18,8 +19,6 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
 
   Future<String> button;
   final controller = ScrollController();
-  var provider;
-  List<Post> posts;
 
   @override
   void initState() {
@@ -27,73 +26,59 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    if (isInit) {
-      provider = Provider.of<Posts>(context);
-
-      if (provider.isPostFetched == false) {
-        provider.getPost().then((_) {
-          setState(() {
-            posts = provider.items;
-          });
-          return provider.items;
-        });
-      } else {
-        setState(() {
-          posts = provider.items;
-        });
-      }
-    }
-    isInit = false;
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        child: posts == null ? CircularProgressIndicator() : Child(posts),
-      ),
-    );
+    return Container(
+        padding: EdgeInsets.all(10.0),
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: FutureBuilder(
+          future: getPost(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return Child(snapshot.data);
+              } else if (snapshot.hasError) {
+                return ErrorWidget(snapshot.error);
+              } else {
+                return CircularProgressIndicator();
+              }
+            } else
+              return CircularProgressIndicator();
+          },
+        ));
   }
 }
+// posts == null ? CircularProgressIndicator() : Child(posts),
 
 class Child extends StatelessWidget {
   final List<Post> posts;
   Child(this.posts);
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return GridView.builder(
       shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.9 * 0.5,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+      ),
       itemCount: posts.length,
       itemBuilder: (context, index) {
         return Container(
-          height: 200,
+          alignment: Alignment.center,
           padding: EdgeInsets.all(20),
-          width: 200,
           child: InkWell(
             onTap: () {
               Navigator.pushNamed(
                   context, 'blog/' + posts[index].id.toString());
             },
             child: Container(
-              height: 200,
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Text(posts[index].title),
-                      SizedBox(height: 10),
-                      MaterialButton(
-                        onPressed: () {},
-                        color: Colors.amber,
-                        child: Text("Open Post"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              height: MediaQuery.of(context).size.width * 0.9 * 0.5,
+              width: MediaQuery.of(context).size.width * 0.9 * 0.5,
+              alignment: Alignment.center,
+              child: Text(posts[index].title),
+
               // child: ListTile(
               //   title: Text(posts[index].title),
               // ),

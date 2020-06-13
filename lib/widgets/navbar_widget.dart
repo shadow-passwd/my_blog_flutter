@@ -6,51 +6,110 @@ import '../data/shared.dart';
 import '../ui/splash/splash.dart';
 import '../model/user_login.dart';
 
+import '../constants/font_family.dart';
+
 class NavBar extends StatelessWidget {
   Function callback;
   bool isLogin;
-  NavBar(this.callback, this.isLogin);
+  final size;
+  BoxConstraints constraints;
+  String currentRouteName;
+  NavBar(
+    this.constraints,
+    this.callback,
+    this.isLogin, {
+    this.size,
+    this.currentRouteName,
+  });
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            HomeButton(
-                text: 'Home', routeName: Routes.home, callback: callback),
-            HomeButton(
-                text: 'Blog', routeName: Routes.blogs, callback: callback),
-            User.isLogin
-                ? MaterialButton(
-                    onPressed: () {
-                      logoutFunc(context);
-                    },
-                    child: Text(
-                      'Logout',
-                    ),
-                    //color: Colors.yellow[900],
-                  )
-                : HomeButton(
-                    text: User.isLogin ? 'Logout' : 'Login',
-                    routeName: Routes.login,
-                    callback: callback),
-            HomeButton(
-                text: 'Editor-Screen',
-                routeName: Routes.editor,
-                callback: callback),
-            HomeButton(
-                text: 'Who-am-I', routeName: Routes.whoAmI, callback: callback),
-            isLogin == true
-                ? HomeButton(
-                    text: 'MyProfile',
-                    routeName: Routes.userProfile,
-                    callback: callback,
-                  )
-                : SizedBox(),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      alignment: Alignment.centerLeft,
+      width: constraints.maxWidth * 0.2,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          HomeButton(
+            text: 'Home',
+            routeName: Routes.home,
+            callback: callback,
+            size: currentRouteName == Routes.home
+                ? size
+                : 30, //constraints.maxWidth * 0.4 * 0.2,
+            constraints: constraints,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          HomeButton(
+            text: 'Blog',
+            routeName: Routes.blogs,
+            callback: callback,
+            size: currentRouteName == Routes.blogs
+                ? size
+                : 30, //constraints.maxWidth * 0.4 * 0.2,
+            constraints: constraints,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          User.isLogin
+              ? MaterialButton(
+                  onPressed: () {
+                    logoutFunc(context);
+                  },
+                  child: Text(
+                    'Logout',
+                  ),
+                  //color: Colors.yellow[900],
+                )
+              : HomeButton(
+                  text: User.isLogin ? 'Logout' : 'Login',
+                  routeName: Routes.login,
+                  callback: callback,
+                  size: currentRouteName == Routes.login
+                      ? size
+                      : 30, //constraints.maxWidth * 0.4 * 0.2,
+                  constraints: constraints,
+                ),
+          SizedBox(
+            height: 20,
+          ),
+          HomeButton(
+            text: 'Editor-Screen',
+            routeName: Routes.editor,
+            callback: callback,
+            size: currentRouteName == Routes.editor
+                ? size
+                : 30, //constraints.maxWidth * 0.4 * 0.2,
+            constraints: constraints,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          HomeButton(
+            text: 'Who-am-I',
+            routeName: Routes.whoAmI,
+            callback: callback,
+            size: currentRouteName == Routes.whoAmI
+                ? size
+                : 30, //constraints.maxWidth * 0.4 * 0.2,
+            constraints: constraints,
+          ),
+          isLogin == true
+              ? HomeButton(
+                  text: 'MyProfile',
+                  routeName: Routes.userProfile,
+                  callback: callback,
+                  size: currentRouteName == Routes.userProfile
+                      ? size
+                      : 30, //constraints.maxWidth * 0.4 * 0.2,
+                  constraints: constraints,
+                )
+              : SizedBox(),
+        ],
       ),
     );
   }
