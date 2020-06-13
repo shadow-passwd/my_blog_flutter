@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker_web/image_picker_web.dart';
 
+import 'package:http_parser/http_parser.dart';
+
 import '../../model/post.dart';
 import '../../model/post_creation.dart';
 import '../../providers/post_provider.dart';
@@ -306,4 +308,25 @@ Future regsiterUser(String username, String email, String password) async {
     print(e);
     return null;
   }
+}
+
+upload(MediaInfo mediaData) {
+//    var stream=http.ByteStream.fromBytes(mediaData.data);
+//    var xx=mediaData.data.length;
+  List<int> bytes = List.from(mediaData.data);
+  //var stream=http.ByteStream.fromBytes(bytes);
+  var url = 'http://127.0.0.1:8080/api/test/';
+  var request = http.MultipartRequest("POST", Uri.parse(url));
+  request.fields['user'] = '1';
+  request.files.add(http.MultipartFile.fromBytes(
+    'image',
+    bytes,
+    filename: mediaData.fileName,
+    contentType: MediaType('application', 'png'),
+  ));
+  request.headers[HttpHeaders.contentTypeHeader] = 'application/json';
+  request
+      .send()
+      .then((value) => print("++++++++++++++" + value.toString()))
+      .catchError((error) => print("+++++++GOT ERROT" + error.toString()));
 }

@@ -7,33 +7,27 @@ class WhoAmI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Shadow",
-                      style: TextStyle(letterSpacing: 5),
-                    ),
-                    CircleAvatar(
-                      child: Icon(Icons.image),
-                      radius: 100,
-                    ),
-                  ],
-                ),
-                TerminalScreen(),
-              ],
-            ),
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Shadow",
+                style: TextStyle(letterSpacing: 5),
+              ),
+              CircleAvatar(
+                child: Icon(Icons.image),
+                radius: 100,
+              ),
+            ],
           ),
-        );
-      },
+          TerminalScreen(),
+        ],
+      ),
     );
   }
 }

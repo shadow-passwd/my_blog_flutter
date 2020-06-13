@@ -81,16 +81,17 @@ class _UserProfileState extends State<UserProfile> {
                   MaterialButton(
                       child: Text("Submit"),
                       onPressed: () {
-                        userProfile(
-                          User.userId,
-                          User.accessToken,
-                          false,
-                          description: description.text,
-                          location: location.text,
-                          base64Image: profilePic.base64,
-                        ).then((value) {
-                          print(value.location);
-                        });
+                        upload(profilePic);
+                        // userProfile(
+                        //   User.userId,
+                        //   User.accessToken,
+                        //   false,
+                        //   description: description.text,
+                        //   location: location.text,
+                        //   base64Image: profilePic.base64,
+                        // ).then((value) {
+                        //   print(value.location);
+                        // });
                       }),
                 ],
               ),

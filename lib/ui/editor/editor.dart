@@ -13,9 +13,10 @@ class EditorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Images(),
-      child: BuildEditor(),
+    return Consumer<Images>(
+      builder: (context, value, child) {
+        return BuildEditor();
+      },
     );
   }
 }
@@ -38,10 +39,11 @@ class _BuildEditorState extends State<BuildEditor> {
   Future<String> preview;
   String data;
 
+
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<Images>(context);
-    var postProvider = Provider.of<Posts>(context);
 
     return Center(
       child: Container(
@@ -65,14 +67,6 @@ class _BuildEditorState extends State<BuildEditor> {
               onPressed: () {
                 createPost(
                     title.text, genre.text, description.text, provider.data);
-                // print("----------------------- STARt");
-                // creation(title.text, genre.text, description.text).then((post) {
-                //   print("----------------------- STARt 1");
-
-                //   postProvider.addPost(post);
-                //   create(provider.data, post.id);
-                //   print("----------------------- STARt 2");
-                // });
               },
               child: Text("HIT ME"),
             ),
@@ -82,6 +76,7 @@ class _BuildEditorState extends State<BuildEditor> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return MarkdownBody(
+                    selectable: true,
                     data: snapshot.data,
                     //controller: controller,
                     imageBuilder: (uri) {
