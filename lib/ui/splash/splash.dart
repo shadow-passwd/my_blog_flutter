@@ -7,6 +7,7 @@ import '../../ui/base_page/base_page.dart';
 import '../../data/shared.dart';
 import '../../model/user_login.dart';
 import '../../constants/app_theme.dart';
+import '../../constants/CustomIcons/construction_icons.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key key}) : super(key: key);
@@ -61,12 +62,22 @@ class _SplashScreenState extends State<SplashScreen> {
 Center buildbody(BuildContext context) {
   return Center(
     child: Container(
+      alignment: Alignment.center,
       margin: EdgeInsets.only(top: 200),
       child: Column(
         children: <Widget>[
           Text(
             "H e l l o \nF r i e n d s",
             style: mrRobotTheme.textTheme.headline6,
+          ),
+          Row(
+            children: [
+              Text('This site is still constructing'),
+              Icon(
+                Construction.construction,
+                size: 40,
+              ),
+            ],
           ),
           Container(
             //color: Colors.grey[900],

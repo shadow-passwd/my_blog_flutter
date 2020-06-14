@@ -6,13 +6,13 @@ import '../constants/CustomIcons/github_icons.dart';
 import '../constants/CustomIcons/twitter_icons.dart';
 
 class TopBar extends StatelessWidget {
-  BoxConstraints constraints;
-  TopBar({this.constraints});
+  final Size boxSize;
+  TopBar({this.boxSize});
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10.0),
-      height: constraints.maxHeight * 0.2,
+      height: boxSize.height * 0.2,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
