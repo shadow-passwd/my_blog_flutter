@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:circular_reveal_animation/circular_reveal_animation.dart';
 
+import '../../widgets/base_widget.dart';
+import '../../utils/sizing_information.dart';
+
 import '../../ui/home/home.dart';
 import '../../ui/login/login.dart';
 import '../../ui/who_am_i/who_am_i.dart';
@@ -13,7 +16,6 @@ import '../../model/user_login.dart';
 import '../../constants/images_location.dart';
 
 import '../../providers/dark_theme_provider.dart';
-import '../../data/shared_dark_theme.dart';
 
 import '../../widgets/navbar_widget.dart';
 import '../../widgets/topbar_widget.dart';
@@ -33,7 +35,7 @@ class _BasePageState extends State<BasePage>
   Animation<double> animation;
   bool cirAn = false;
 
-  void callback(String route, BoxConstraints constraints) {
+  void callback(String route, Size boxSize) {
     setState(() {
       currentRouteName = route;
       buttonSize = 40;
@@ -77,36 +79,56 @@ class _BasePageState extends State<BasePage>
 
   SafeArea buildBody(BuildContext context, DarkThemeProvider themeChange) {
     return SafeArea(
-      child: Scaffold(
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            var height = constraints.maxHeight;
-            var width = constraints.maxWidth;
-            print("height is $height and width is $width");
-            print('${constraints.maxHeight / 15}');
-            return Container(
+      child: BaseWidget(
+        builder: (context, sizingInformation) {
+          return Scaffold(
+            appBar: (sizingInformation.deviceType == DeviceScreenType.Tablet) ||
+                    (sizingInformation.deviceType == DeviceScreenType.Mobile)
+                ? AppBar()
+                : null,
+            drawer: (sizingInformation.deviceType == DeviceScreenType.Tablet) ||
+                    (sizingInformation.deviceType == DeviceScreenType.Mobile)
+                ? myDrawer(
+                    sizingInformation.localWidgetSize, callback, User.isLogin)
+                : null,
+            body: Container(
               child: Row(
                 children: [
                   Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TopBar(
-                          constraints: constraints,
+                          boxSize: sizingInformation.screenSize,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            NavBar(
-                              constraints,
-                              callback,
-                              User.isLogin,
-                              size: buttonSize,
-                              currentRouteName: currentRouteName,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              height: MediaQuery.of(context).size.height * 0.8,
-                              child: SingleChildScrollView(
-                                child: displayPage(currentRouteName, context),
+                            (sizingInformation.deviceType !=
+                                        DeviceScreenType.Tablet) &&
+                                    (sizingInformation.deviceType !=
+                                        DeviceScreenType.Mobile)
+                                ? NavBar(
+                                    sizingInformation.screenSize,
+                                    callback,
+                                    User.isLogin,
+                                    size: buttonSize,
+                                    currentRouteName: currentRouteName,
+                                  )
+                                : SizedBox(),
+                            Center(
+                              child: Container(
+                                width: sizingInformation.localWidgetSize.width *
+                                    0.75,
+                                height:
+                                    sizingInformation.localWidgetSize.height *
+                                        0.7,
+                                alignment: Alignment.center,
+                                child: SingleChildScrollView(
+                                  child: displayPage(currentRouteName, context,
+                                      sizingInformation),
+                                ),
                               ),
                             ),
                           ],
@@ -116,7 +138,7 @@ class _BasePageState extends State<BasePage>
                   ),
                   Container(
                     alignment: Alignment.topRight,
-                    width: constraints.maxWidth * 0.05,
+                    width: sizingInformation.screenSize.width * 0.05,
                     child: InkWell(
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(30),
@@ -138,10 +160,10 @@ class _BasePageState extends State<BasePage>
                       },
                       child: Container(
                         padding: EdgeInsets.all(10.0),
-                        height: constraints.maxHeight / 5.4,
-                        width: constraints.maxWidth * 0.05 > 50
+                        height: sizingInformation.screenSize.height / 5.4,
+                        width: sizingInformation.screenSize.width * 0.05 > 50
                             ? 50
-                            : constraints.maxWidth * 0.05,
+                            : sizingInformation.screenSize.width * 0.05,
                         child: Image.asset(themeChange.darkTheme
                             ? ImageLocation.bulb_off
                             : ImageLocation.bulb_on),
@@ -157,17 +179,18 @@ class _BasePageState extends State<BasePage>
                   )
                 ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-Widget displayPage(String currentRouteName, BuildContext context) {
+Widget displayPage(String currentRouteName, BuildContext context,
+    SizingInformation sizingInformation) {
   if (currentRouteName == Routes.home)
-    return HomeScreen();
+    return HomeScreen(sizingInformation: sizingInformation);
   else if (currentRouteName == Routes.blogs)
     return BlogHomeScreen();
   else if (currentRouteName == Routes.whoAmI)
@@ -181,4 +204,10 @@ Widget displayPage(String currentRouteName, BuildContext context) {
     return UserProfile();
   else
     return Text("NO BUILT IT YET");
+}
+
+Widget myDrawer(Size boxSize, Function callback, bool isLogin) {
+  return Drawer(
+    child: NavBar(boxSize, callback, isLogin),
+  );
 }

@@ -89,4 +89,8 @@ flutter:
         - asset: fonts/Github.ttf
     - family:  Twitter
       fonts:
-       - asset: fonts/Twitter.ttf
+        - asset: fonts/Twitter.ttf
+    - family:  Construction
+      fonts:
+        - asset: fonts/Construction.ttf
+       

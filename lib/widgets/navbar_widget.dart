@@ -9,13 +9,13 @@ import '../model/user_login.dart';
 import '../constants/font_family.dart';
 
 class NavBar extends StatelessWidget {
-  Function callback;
-  bool isLogin;
+  final Function callback;
+  final bool isLogin;
   final size;
-  BoxConstraints constraints;
-  String currentRouteName;
+  final Size boxSize;
+  final String currentRouteName;
   NavBar(
-    this.constraints,
+    this.boxSize,
     this.callback,
     this.isLogin, {
     this.size,
@@ -26,7 +26,7 @@ class NavBar extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10.0),
       alignment: Alignment.centerLeft,
-      width: constraints.maxWidth * 0.2,
+      width: boxSize.width * 0.2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,7 +38,7 @@ class NavBar extends StatelessWidget {
             size: currentRouteName == Routes.home
                 ? size
                 : 30, //constraints.maxWidth * 0.4 * 0.2,
-            constraints: constraints,
+            boxSize: boxSize,
           ),
           SizedBox(
             height: 20,
@@ -50,7 +50,7 @@ class NavBar extends StatelessWidget {
             size: currentRouteName == Routes.blogs
                 ? size
                 : 30, //constraints.maxWidth * 0.4 * 0.2,
-            constraints: constraints,
+            boxSize: boxSize,
           ),
           SizedBox(
             height: 20,
@@ -72,7 +72,7 @@ class NavBar extends StatelessWidget {
                   size: currentRouteName == Routes.login
                       ? size
                       : 30, //constraints.maxWidth * 0.4 * 0.2,
-                  constraints: constraints,
+                  boxSize: boxSize,
                 ),
           SizedBox(
             height: 20,
@@ -84,7 +84,7 @@ class NavBar extends StatelessWidget {
             size: currentRouteName == Routes.editor
                 ? size
                 : 30, //constraints.maxWidth * 0.4 * 0.2,
-            constraints: constraints,
+            boxSize: boxSize,
           ),
           SizedBox(
             height: 20,
@@ -96,7 +96,7 @@ class NavBar extends StatelessWidget {
             size: currentRouteName == Routes.whoAmI
                 ? size
                 : 30, //constraints.maxWidth * 0.4 * 0.2,
-            constraints: constraints,
+            boxSize: boxSize,
           ),
           isLogin == true
               ? HomeButton(
@@ -106,7 +106,7 @@ class NavBar extends StatelessWidget {
                   size: currentRouteName == Routes.userProfile
                       ? size
                       : 30, //constraints.maxWidth * 0.4 * 0.2,
-                  constraints: constraints,
+                  boxSize: boxSize,
                 )
               : SizedBox(),
         ],

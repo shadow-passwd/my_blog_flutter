@@ -7,14 +7,14 @@ class HomeButton extends StatelessWidget {
   final routeName;
   final text;
   final size;
-  BoxConstraints constraints;
+  final Size boxSize;
   Function callback;
   HomeButton({
     this.routeName,
     this.text,
     this.callback,
     this.size = 30,
-    this.constraints,
+    this.boxSize,
   });
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class HomeButton extends StatelessWidget {
       alignment: Alignment.center,
       child: MaterialButton(
         onPressed: () {
-          callback(routeName, constraints);
+          callback(routeName, boxSize);
         },
         child: AutoSizeText(
           text,
