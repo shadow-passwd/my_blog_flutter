@@ -9,21 +9,26 @@ class HomeButton extends StatelessWidget {
   final size;
   final Size boxSize;
   Function callback;
+  final isDrawerOpened;
+  final BuildContext drawerContext;
   HomeButton({
     this.routeName,
     this.text,
     this.callback,
     this.size = 30,
     this.boxSize,
+    this.drawerContext,
+    this.isDrawerOpened = false,
   });
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10.0),
       alignment: Alignment.center,
-      child: MaterialButton(
+      child: FlatButton(
+        hoverColor: Theme.of(context).hoverColor,
         onPressed: () {
-          callback(routeName, boxSize);
+          callback(routeName, boxSize, drawerContext, isDrawerOpened);
         },
         child: AutoSizeText(
           text,

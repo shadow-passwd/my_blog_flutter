@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import 'dart:math';
 
 import '../../model/post.dart';
 import '../../utils/api/api_calls.dart';
-import '../../widgets/network_error.dart';
-import '../../providers/post_provider.dart';
 
 class BlogHomeScreen extends StatefulWidget {
   const BlogHomeScreen({Key key}) : super(key: key);
@@ -32,7 +31,7 @@ class _BlogHomeScreenState extends State<BlogHomeScreen> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.8,
         child: FutureBuilder(
-          future: getPost(),
+          future: getPosts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
@@ -58,34 +57,50 @@ class Child extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.9 * 0.5,
+        maxCrossAxisExtent: MediaQuery.of(context).size.width * 0.9 * 0.3,
         childAspectRatio: 3 / 2,
         crossAxisSpacing: 20,
         mainAxisSpacing: 20,
       ),
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        return Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(20),
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(
-                  context, 'blog/' + posts[index].id.toString());
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.width * 0.9 * 0.5,
-              width: MediaQuery.of(context).size.width * 0.9 * 0.5,
-              alignment: Alignment.center,
-              child: Text(posts[index].title),
+        return InkWell(
+          borderRadius: BorderRadius.circular(30.0),
+          onTap: () {
+            Navigator.pushNamed(context, 'blog/' + posts[index].id.toString());
+          },
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(20),
 
-              // child: ListTile(
-              //   title: Text(posts[index].title),
-              // ),
+            height: MediaQuery.of(context).size.width * 0.9 * 0.3,
+            decoration: BoxDecoration(
+              color: _colors[Random().nextInt(_colors.length)],
+              borderRadius: BorderRadius.circular(30.0),
             ),
+            width: MediaQuery.of(context).size.width * 0.9 * 0.3,
+            child: Text(posts[index].title),
+
+            // child: ListTile(
+            //   title: Text(posts[index].title),
+            // ),
           ),
         );
       },
     );
   }
 }
+
+List<MaterialColor> _colors = [
+  Colors.amber,
+  Colors.orange,
+  Colors.red,
+  Colors.blue,
+  Colors.pink,
+  Colors.yellow,
+  Colors.purple,
+  Colors.green,
+  Colors.cyan,
+  Colors.teal,
+  Colors.indigo,
+];

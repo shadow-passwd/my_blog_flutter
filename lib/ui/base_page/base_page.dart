@@ -35,12 +35,31 @@ class _BasePageState extends State<BasePage>
   Animation<double> animation;
   bool cirAn = false;
 
-  void callback(String route, Size boxSize) {
+  bool isDrawerOpened = false;
+
+  void callback(String route, Size boxSize, BuildContext drawerContext,
+      bool isDrawerOpened) {
     setState(() {
       currentRouteName = route;
       buttonSize = 40;
+      if (isDrawerOpened) Navigator.of(drawerContext).pop();
+
       // buttonSize = constraints.maxWidth * 0.8;
     });
+  }
+
+  void themeSwitcher(DarkThemeProvider themeChange) {
+    setState(() {
+      cirAn = true;
+    });
+    themeChange.darkTheme = !themeChange.darkTheme;
+    if (animationController.status == AnimationStatus.forward ||
+        animationController.status == AnimationStatus.completed) {
+      animationController.reset();
+      animationController.forward();
+    } else {
+      animationController.forward();
+    }
   }
 
   @override
@@ -82,14 +101,19 @@ class _BasePageState extends State<BasePage>
       child: BaseWidget(
         builder: (context, sizingInformation) {
           return Scaffold(
+            floatingActionButton: (sizingInformation.deviceType ==
+                        DeviceScreenType.Tablet) ||
+                    (sizingInformation.deviceType == DeviceScreenType.Mobile)
+                ? myFab(themeChange, context, themeSwitcher)
+                : null,
             appBar: (sizingInformation.deviceType == DeviceScreenType.Tablet) ||
                     (sizingInformation.deviceType == DeviceScreenType.Mobile)
                 ? AppBar()
                 : null,
             drawer: (sizingInformation.deviceType == DeviceScreenType.Tablet) ||
                     (sizingInformation.deviceType == DeviceScreenType.Mobile)
-                ? myDrawer(
-                    sizingInformation.localWidgetSize, callback, User.isLogin)
+                ? myDrawer(sizingInformation.localWidgetSize, callback,
+                    User.isLogin, isDrawerOpened, context)
                 : null,
             body: Container(
               child: Row(
@@ -117,18 +141,15 @@ class _BasePageState extends State<BasePage>
                                     currentRouteName: currentRouteName,
                                   )
                                 : SizedBox(),
-                            Center(
-                              child: Container(
-                                width: sizingInformation.localWidgetSize.width *
-                                    0.75,
-                                height:
-                                    sizingInformation.localWidgetSize.height *
-                                        0.7,
-                                alignment: Alignment.center,
-                                child: SingleChildScrollView(
-                                  child: displayPage(currentRouteName, context,
-                                      sizingInformation),
-                                ),
+                            Container(
+                              width: sizingInformation.localWidgetSize.width *
+                                  0.75,
+                              height: sizingInformation.localWidgetSize.height *
+                                  0.7,
+                              alignment: Alignment.center,
+                              child: SingleChildScrollView(
+                                child: displayPage(currentRouteName, context,
+                                    sizingInformation),
                               ),
                             ),
                           ],
@@ -136,47 +157,40 @@ class _BasePageState extends State<BasePage>
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    width: sizingInformation.screenSize.width * 0.05,
-                    child: InkWell(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30)),
-                      onTap: () {
-                        setState(() {
-                          cirAn = true;
-                        });
-                        themeChange.darkTheme = !themeChange.darkTheme;
-                        if (animationController.status ==
-                                AnimationStatus.forward ||
-                            animationController.status ==
-                                AnimationStatus.completed) {
-                          animationController.reset();
-                          animationController.forward();
-                        } else {
-                          animationController.forward();
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10.0),
-                        height: sizingInformation.screenSize.height / 5.4,
-                        width: sizingInformation.screenSize.width * 0.05 > 50
-                            ? 50
-                            : sizingInformation.screenSize.width * 0.05,
-                        child: Image.asset(themeChange.darkTheme
-                            ? ImageLocation.bulb_off
-                            : ImageLocation.bulb_on),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30)),
-                          shape: BoxShape.rectangle,
-                          color: Theme.of(context).hoverColor,
-                        ),
-                      ),
-                    ),
-                  )
+                  (sizingInformation.deviceType != DeviceScreenType.Tablet) &&
+                          (sizingInformation.deviceType !=
+                              DeviceScreenType.Mobile)
+                      ? Container(
+                          alignment: Alignment.topRight,
+                          width: sizingInformation.screenSize.width * 0.05,
+                          child: InkWell(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30),
+                                bottomRight: Radius.circular(30)),
+                            onTap: () {
+                              themeSwitcher(themeChange);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10.0),
+                              height: sizingInformation.screenSize.height / 5.4,
+                              width: sizingInformation.screenSize.width * 0.05 >
+                                      50
+                                  ? 50
+                                  : sizingInformation.screenSize.width * 0.05,
+                              child: Image.asset(themeChange.darkTheme
+                                  ? ImageLocation.bulb_off
+                                  : ImageLocation.bulb_on),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(30),
+                                    bottomRight: Radius.circular(30)),
+                                shape: BoxShape.rectangle,
+                                color: Theme.of(context).hoverColor,
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox()
                 ],
               ),
             ),
@@ -206,8 +220,25 @@ Widget displayPage(String currentRouteName, BuildContext context,
     return Text("NO BUILT IT YET");
 }
 
-Widget myDrawer(Size boxSize, Function callback, bool isLogin) {
+Widget myDrawer(Size boxSize, Function callback, bool isLogin,
+    bool isDrawerOpened, BuildContext context) {
   return Drawer(
-    child: NavBar(boxSize, callback, isLogin),
+    child: NavBar(
+      boxSize,
+      callback,
+      isLogin,
+      isDrawerOpened: true,
+      drawerContext: context,
+    ),
   );
+}
+
+Widget myFab(DarkThemeProvider themeChange, BuildContext context,
+    Function themeSwitcher) {
+  return FloatingActionButton(
+      child:
+          Icon(themeChange.darkTheme ? Icons.brightness_3 : Icons.brightness_5),
+      onPressed: () {
+        themeSwitcher(themeChange);
+      });
 }

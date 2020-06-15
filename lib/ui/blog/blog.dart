@@ -5,6 +5,7 @@ import 'package:markdown_widget/markdown_widget.dart' as TOC;
 
 import '../../model/post.dart';
 import '../../constants/urls.dart';
+import '../../model/single_post.dart';
 import '../../utils/api/api_calls.dart';
 import '../../providers/post_provider.dart';
 
@@ -22,8 +23,8 @@ class BlogScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("BLOG"),
       ),
-      body: FutureBuilder<Post>(
-        future: singlePost(blogId),
+      body: FutureBuilder<SinglePost>(
+        future: getSinglePost(int.parse(blogId)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print("http://127.0.0.1:8000/images/post_images/" +
@@ -36,13 +37,12 @@ class BlogScreen extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: TOC.MarkdownWidget(
-                    data: snapshot.data.description,
+                    data: snapshot.data.content,
                     controller: controller,
                     styleConfig: TOC.StyleConfig(
                       imgBuilder: (String url, attributes) {
-                        return Image.network(Urls.imageUrl +
-                            '${snapshot.data.user}/${snapshot.data.id}/' +
-                            url);
+                        return Image.network(
+                            Urls.imageUrl + '${snapshot.data.id}/' + url);
                       },
                     ),
                   ),

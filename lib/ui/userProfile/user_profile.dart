@@ -9,6 +9,9 @@ import '../../model/user_login.dart';
 import '../../model/user.dart' as UserModel;
 import '../../constants/images_location.dart';
 
+import '../../constants/CustomIcons/github_icons.dart';
+import '../../constants/CustomIcons/twitter_icons.dart';
+
 class UserProfile extends StatefulWidget {
   UserProfile();
   @override
@@ -17,14 +20,20 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final location = TextEditingController();
-
+  final githubIdUrl = TextEditingController();
+  final facebookIdUrl = TextEditingController();
+  final twitterIdUrl = TextEditingController();
   final description = TextEditingController();
 
   MediaInfo profilePic;
+  MediaInfo coverImage;
+
+  bool isLoading = false;
 
   profileFunction() {
     pickProfileImage().then((mediaData) {
       setState(() {
+        // print(mime(Path.basename(mediaData.fileName)));
         profilePic = mediaData;
       });
     });
@@ -34,72 +43,90 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: FutureBuilder<UserModel.UserProfile>(
-        future: userProfile(User.userId, User.accessToken, true),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        User.username,
-                        style: TextStyle(letterSpacing: 5),
-                      ),
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: profilePic == null
-                                ? snapshot.data == null
-                                    ? AssetImage(ImageLocation.homeImage)
-                                    : MemoryImage(base64Decode(
-                                        snapshot.data.profilePicBase64))
-                                : MemoryImage(profilePic.data),
-                            radius: 200.0,
-                          ),
-                          RaisedButton.icon(
-                              onPressed: profileFunction,
-                              icon: Icon(Icons.image),
-                              label: Text("Pick-Up Images")),
-                        ],
-                      ),
-                    ],
-                  ),
-                  InputField(
-                      description,
-                      snapshot.data == null
-                          ? 'Description ..'
-                          : snapshot.data.description),
-                  InputField(
-                      location,
-                      snapshot.data == null
-                          ? 'Location'
-                          : snapshot.data.location),
-                  MaterialButton(
-                      child: Text("Submit"),
-                      onPressed: () {
-                        upload(profilePic);
-                        // userProfile(
-                        //   User.userId,
-                        //   User.accessToken,
-                        //   false,
-                        //   description: description.text,
-                        //   location: location.text,
-                        //   base64Image: profilePic.base64,
-                        // ).then((value) {
-                        //   print(value.location);
-                        // });
-                      }),
-                ],
-              ),
-            );
-          } else
-            return CircularProgressIndicator();
-        },
-      ),
+      child: isLoading
+          ? CircularProgressIndicator()
+          : FutureBuilder<UserModel.UserProfile>(
+              future: getUserProfile(User.userId, User.accessToken),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              User.username,
+                              style: TextStyle(letterSpacing: 5),
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: profilePic == null
+                                      ? snapshot.data == null
+                                          ? AssetImage(ImageLocation.homeImage)
+                                          : NetworkImage(
+                                              snapshot.data.profilePic)
+                                      : MemoryImage(profilePic.data),
+                                  radius: 200.0,
+                                ),
+                                RaisedButton.icon(
+                                    onPressed: profileFunction,
+                                    icon: Icon(Icons.image),
+                                    label: Text("Pick-Up Images")),
+                              ],
+                            ),
+                          ],
+                        ),
+                        InputField(
+                            description,
+                            snapshot.data == null
+                                ? 'Description ..'
+                                : snapshot.data.description),
+                        InputField(
+                            location,
+                            snapshot.data == null
+                                ? 'Location'
+                                : snapshot.data.location),
+                        InputField(
+                          githubIdUrl,
+                          "Github",
+                          minLines: 1,
+                          icon: Github.github,
+                        ),
+                        InputField(facebookIdUrl, "Facebook", minLines: 1),
+                        InputField(
+                          twitterIdUrl,
+                          "Twitter",
+                          minLines: 1,
+                          icon: Twitter.twitter_bird,
+                        ),
+                        MaterialButton(
+                            child: Text("Submit"),
+                            onPressed: () {
+                              // upload(profilePic);
+                              isLoading = true;
+                              userProfileCreation(
+                                      User.userId,
+                                      User.username,
+                                      profilePic,
+                                      coverImage,
+                                      description.text,
+                                      location.text,
+                                      githubIdUrl.text,
+                                      twitterIdUrl.text,
+                                      facebookIdUrl.text,
+                                      User.accessToken)
+                                  .then((value) => print(value));
+                            }),
+                      ],
+                    ),
+                  );
+                } else
+                  return CircularProgressIndicator();
+              },
+            ),
     );
   }
 }

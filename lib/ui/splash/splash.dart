@@ -65,6 +65,8 @@ Center buildbody(BuildContext context) {
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 200),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             "H e l l o \nF r i e n d s",

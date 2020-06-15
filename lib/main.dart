@@ -9,8 +9,6 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'providers/dark_theme_provider.dart';
 import 'providers/editor_image_provider.dart';
 import 'constants/theme_data.dart';
-import 'providers/post_provider.dart';
-import 'constants/app_theme.dart';
 
 void main() {
   FluroRouter.setupRouter();

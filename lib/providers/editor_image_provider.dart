@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
-import '../model/post.dart';
-
 class Images with ChangeNotifier {
   Map<String, MediaInfo> _images = Map<String, MediaInfo>();
 
@@ -22,4 +20,7 @@ class Images with ChangeNotifier {
     _images[filename] = mediaData;
     notifyListeners();
   }
+
+  void addPostMetaData(String email, String github, String facebook,
+      String twitter, String title, String genre, String tags) {}
 }
