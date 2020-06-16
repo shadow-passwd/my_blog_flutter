@@ -5,4 +5,5 @@ class User {
   static String username;
   static String accessToken;
   static int userId;
+  static String expiryTime;
 }

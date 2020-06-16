@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:provider/provider.dart';
 import 'package:markdown_widget/markdown_widget.dart' as TOC;
 
-import '../../model/post.dart';
 import '../../constants/urls.dart';
 import '../../model/single_post.dart';
 import '../../utils/api/api_calls.dart';
-import '../../providers/post_provider.dart';
 
 class BlogScreen extends StatelessWidget {
   final String blogId;
@@ -16,7 +12,6 @@ class BlogScreen extends StatelessWidget {
 
   BlogScreen(this.blogId);
 
-//TODO:ADD SINGLE USER POST FETCH API IN DJNAGO
   @override
   Widget build(BuildContext context) {
     return Scaffold(

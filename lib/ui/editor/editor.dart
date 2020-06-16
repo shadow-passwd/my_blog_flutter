@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'edtitor_page.dart';
+
+import '../../routes.dart';
 
 class EditorScreen extends StatelessWidget {
   const EditorScreen({Key key}) : super(key: key);
@@ -10,9 +11,10 @@ class EditorScreen extends StatelessWidget {
     return Container(
       child: FlatButton(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => EditorPage(),
-            ));
+            Navigator.of(context).pushReplacementNamed(Routes.editor);
+            // Navigator.of(context).push(MaterialPageRoute(
+            //   builder: (context) => EditorPage(),
+            // ));
           },
           child: Text("Click to Open Editor Screen")),
     );

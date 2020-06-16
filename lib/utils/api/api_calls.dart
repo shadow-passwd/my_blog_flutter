@@ -170,8 +170,8 @@ Future<UserProfile> getUserProfile(int id, String token) async {
 Future userProfileCreation(
     int id,
     String user,
-    MediaInfo profile_pic,
-    MediaInfo profile_cover_image,
+    MediaInfo profilePic,
+    MediaInfo profileCoverImage,
     String description,
     String location,
     String githubIdUrl,
@@ -188,18 +188,18 @@ Future userProfileCreation(
   if (githubIdUrl != null) request.fields['github_id_url'] = githubIdUrl;
   if (twitterIdUrl != null) request.fields['twitter_id_url'] = twitterIdUrl;
   if (facebookIdUrl != null) request.fields['facebook_id_url'] = facebookIdUrl;
-  if (profile_cover_image != null)
+  if (profileCoverImage != null)
     request.files.add(http.MultipartFile.fromBytes(
       'profile_cover_image',
-      List.from(profile_cover_image.data),
-      filename: profile_cover_image.fileName,
+      List.from(profileCoverImage.data),
+      filename: profileCoverImage.fileName,
       contentType: MediaType('application', 'png'),
     ));
-  if (profile_pic != null)
+  if (profilePic != null)
     request.files.add(http.MultipartFile.fromBytes(
       'profile_pic',
-      List.from(profile_pic.data),
-      filename: profile_pic.fileName,
+      List.from(profilePic.data),
+      filename: profilePic.fileName,
       contentType: MediaType('application', 'png'),
     ));
 
@@ -264,8 +264,20 @@ futureLogin(String username, String password) async {
 Future<String> userLogin(String username, String password) async {
   var r = await futureLogin(username, password);
   r = JsonDecoder().convert(r.body);
-  print(r['userid'].toString() + ':' + username + ":" + r['access'].toString());
-  return r['userid'].toString() + ':' + username + ":" + r['access'].toString();
+  print(r['userid'].toString() +
+      ':' +
+      username +
+      ":" +
+      r['access'].toString() +
+      ":" +
+      r['expiry_time'].toString());
+  return r['userid'].toString() +
+      ':' +
+      username +
+      ":" +
+      r['access'].toString() +
+      ":" +
+      r['expiry_time'].toString();
 }
 
 ///////////////////////////////////PICK IMAGE //////////////////////////////////////////

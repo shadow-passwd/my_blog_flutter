@@ -4,17 +4,17 @@ import '../utils/sizing_information.dart';
 import '../providers/dark_theme_provider.dart';
 
 class InputField extends StatelessWidget {
-  TextEditingController controller;
-  int minLines, maxLines = 1;
-  String hinttext;
-  bool obscure = false;
-  IconData icon;
-  SizingInformation sizingInformation;
+  final TextEditingController controller;
+  final int minLines, maxLines;
+  final String hinttext;
+  final bool obscure;
+  final IconData icon;
+  final SizingInformation sizingInformation;
   InputField(
     this.controller,
     this.hinttext, {
     this.minLines,
-    this.maxLines,
+    this.maxLines = 1,
     this.sizingInformation,
     this.obscure = false,
     this.icon,

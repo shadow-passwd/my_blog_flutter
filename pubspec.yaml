@@ -45,6 +45,7 @@ flutter:
     - images/networkError.png
     - images/bulb_off.png
     - images/bulb_on.png
+    - images/const_pict.png
 
   fonts:
     - family: HackedKerX

@@ -8,7 +8,7 @@ class HomeButton extends StatelessWidget {
   final text;
   final size;
   final Size boxSize;
-  Function callback;
+  final Function callback;
   final isDrawerOpened;
   final BuildContext drawerContext;
   HomeButton({

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/dark_theme_provider.dart';
 import '../widgets/home_button.dart';
 import '../routes.dart';
-import '../data/shared.dart';
-import '../ui/splash/splash.dart';
-import '../model/user_login.dart';
 
 class NavBar extends StatelessWidget {
   final Function callback;
@@ -25,6 +24,8 @@ class NavBar extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+
     return Container(
       padding: EdgeInsets.all(10.0),
       alignment: Alignment.centerLeft,
@@ -63,27 +64,18 @@ class NavBar extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              User.isLogin
-                  ? MaterialButton(
-                      onPressed: () {
-                        logoutFunc(context);
-                      },
-                      child: Text(
-                        'Logout',
-                      ),
-                      //color: Colors.yellow[900],
-                    )
-                  : HomeButton(
-                      text: User.isLogin ? 'Logout' : 'Login',
-                      routeName: Routes.login,
-                      callback: callback,
-                      size: currentRouteName == Routes.login
-                          ? size
-                          : 30, //constraints.maxWidth * 0.4 * 0.2,
-                      boxSize: boxSize,
-                      drawerContext: drawerContext,
-                      isDrawerOpened: isDrawerOpened,
-                    ),
+              HomeButton(
+                text: themeChange.isLogin ? 'Logout' : 'Login',
+                routeName: themeChange.isLogin ? Routes.logout : Routes.login,
+                callback: callback,
+                size: currentRouteName == Routes.login ||
+                        currentRouteName == Routes.logout
+                    ? size
+                    : 30, //constraints.maxWidth * 0.4 * 0.2,
+                boxSize: boxSize,
+                drawerContext: drawerContext,
+                isDrawerOpened: isDrawerOpened,
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -131,15 +123,4 @@ class NavBar extends StatelessWidget {
       ),
     );
   }
-}
-
-logoutFunc(BuildContext context) {
-  removeValues();
-  User.isLogin = false;
-  User.username = null;
-  User.accessToken = null;
-  User.userId = null;
-  Navigator.of(context).pushReplacement(MaterialPageRoute(
-    builder: (context) => SplashScreen(),
-  ));
 }

@@ -6,9 +6,9 @@ import 'ui/who_am_i/who_am_i.dart';
 import 'ui/splash/splash.dart';
 import 'ui/blog/blog_home.dart';
 import 'ui/home/home.dart';
-import 'ui/editor/editor.dart';
 import 'ui/userProfile/user_profile.dart';
 import 'ui/login/login.dart';
+import 'ui/editor/edtitor_page.dart';
 
 class FluroRouter {
   static Router router = Router();
@@ -30,7 +30,7 @@ class FluroRouter {
     handlerFunc: (context, Map<String, dynamic> params) => HomeScreen(),
   );
   static Handler _editorHandler = Handler(
-    handlerFunc: (context, Map<String, dynamic> params) => EditorScreen(),
+    handlerFunc: (context, Map<String, dynamic> params) => EditorPage(),
   );
   static Handler _whoAmIHandler = Handler(
     handlerFunc: (context, Map<String, dynamic> params) => WhoAmI(),
