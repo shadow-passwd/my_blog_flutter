@@ -23,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Center(
       child: Image.asset(
         ImageLocation.homeImage,
-        height: widget.sizingInformation.localWidgetSize.height * 0.8,
-        width: widget.sizingInformation.localWidgetSize.width * 0.75,
+        height: widget.sizingInformation.localWidgetSize.height * 0.7,
+        width: widget.sizingInformation.localWidgetSize.width * 0.65,
       ),
     );
   }

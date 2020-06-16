@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
-import '../../providers/editor_image_provider.dart';
 import '../../utils/api/api_calls.dart';
 
 class ImageLoad extends StatelessWidget {

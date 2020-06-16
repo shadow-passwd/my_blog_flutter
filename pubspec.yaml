@@ -21,6 +21,8 @@ dependencies:
   auto_size_text: ^2.1.0
   responsive_framework: ^0.0.7
   markdown_widget: ^1.2.0
+  mime_type: ^0.3.1
+
 
 
 
@@ -43,6 +45,7 @@ flutter:
     - images/networkError.png
     - images/bulb_off.png
     - images/bulb_on.png
+    - images/const_pict.png
 
   fonts:
     - family: HackedKerX
