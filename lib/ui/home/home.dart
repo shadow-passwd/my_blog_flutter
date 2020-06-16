@@ -21,10 +21,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Image.asset(
-        ImageLocation.homeImage,
-        height: widget.sizingInformation.localWidgetSize.height * 0.7,
-        width: widget.sizingInformation.localWidgetSize.width * 0.65,
+      child: Container(
+        alignment: Alignment.center,
+        child: Image.asset(
+          ImageLocation.homeImage,
+          fit: BoxFit.contain,
+          // height: widget.sizingInformation.localWidgetSize.height * 0.7,
+          width: widget.sizingInformation.localWidgetSize.width * 0.65,
+        ),
       ),
     );
   }

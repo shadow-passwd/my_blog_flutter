@@ -58,6 +58,7 @@ class _BaseScreenState extends State<BaseScreen>
   @override
   void initState() {
     super.initState();
+
     currentRouteName = Routes.home;
     setState(() {
       buttonSize = 40;
@@ -93,6 +94,7 @@ class _BaseScreenState extends State<BaseScreen>
     return SafeArea(
       child: BaseWidget(
         builder: (context, sizingInformation) {
+          print(sizingInformation.screenSize.toString());
           return Scaffold(
             floatingActionButton:
                 myFab(themeChange, context, themeSwitcher, sizingInformation),
@@ -106,33 +108,35 @@ class _BaseScreenState extends State<BaseScreen>
               child: Row(
                 children: [
                   Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TopBar(
-                          boxSize: sizingInformation.screenSize,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            (sizingInformation.deviceType ==
-                                        DeviceScreenType.Tablet) ||
-                                    (sizingInformation.deviceType ==
-                                        DeviceScreenType.Mobile)
-                                ? SizedBox()
-                                : NavBar(
-                                    sizingInformation.screenSize,
-                                    callback,
-                                    User.isLogin,
-                                    size: buttonSize,
-                                    currentRouteName: currentRouteName,
-                                  ),
-                            displayPage(
-                                currentRouteName, context, sizingInformation),
-                          ],
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          TopBar(
+                            boxSize: sizingInformation.screenSize,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              (sizingInformation.deviceType ==
+                                          DeviceScreenType.Tablet) ||
+                                      (sizingInformation.deviceType ==
+                                          DeviceScreenType.Mobile)
+                                  ? SizedBox()
+                                  : NavBar(
+                                      sizingInformation.screenSize,
+                                      callback,
+                                      User.isLogin,
+                                      size: buttonSize,
+                                      currentRouteName: currentRouteName,
+                                    ),
+                              displayPage(
+                                  currentRouteName, context, sizingInformation),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   BuildAnimationBulb(

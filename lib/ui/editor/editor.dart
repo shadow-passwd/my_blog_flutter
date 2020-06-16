@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../../routes.dart';
 
 class EditorScreen extends StatelessWidget {
@@ -11,7 +10,7 @@ class EditorScreen extends StatelessWidget {
     return Container(
       child: FlatButton(
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed(Routes.editor);
+            Navigator.of(context).pushNamed(Routes.editor);
             // Navigator.of(context).push(MaterialPageRoute(
             //   builder: (context) => EditorPage(),
             // ));
