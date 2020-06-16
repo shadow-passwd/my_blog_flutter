@@ -116,18 +116,18 @@ class _BaseScreenState extends State<BaseScreen>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            (sizingInformation.deviceType !=
-                                        DeviceScreenType.Tablet) &&
-                                    (sizingInformation.deviceType !=
+                            (sizingInformation.deviceType ==
+                                        DeviceScreenType.Tablet) ||
+                                    (sizingInformation.deviceType ==
                                         DeviceScreenType.Mobile)
-                                ? NavBar(
+                                ? SizedBox()
+                                : NavBar(
                                     sizingInformation.screenSize,
                                     callback,
                                     User.isLogin,
                                     size: buttonSize,
                                     currentRouteName: currentRouteName,
-                                  )
-                                : SizedBox(),
+                                  ),
                             displayPage(
                                 currentRouteName, context, sizingInformation),
                           ],
