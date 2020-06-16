@@ -1,7 +1,7 @@
 class Urls {
   Urls._();
-  // static const String BASE_URL = 'https://shadowblog.herokuapp.com/';
-  static const String BASE_URL = 'http://127.0.0.1:8080/';
+  static const String BASE_URL = 'https://shadowblog.herokuapp.com/';
+  // static const String BASE_URL = 'http://127.0.0.1:8080/';
   static const String loginUrl = BASE_URL + "api/token/";
   static const String getPostUrl = BASE_URL + "api/post/";
   static const String getSinglePostUrl = BASE_URL + 'api/post/';

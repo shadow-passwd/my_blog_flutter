@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 import 'text_field_widget.dart';
 import 'editor_content_widget.dart';
+import '../providers/dark_theme_provider.dart';
 
 import '../utils/api/api_calls.dart';
 import '../constants/CustomIcons/github_icons.dart';
@@ -43,6 +46,8 @@ class _EditorMetaDataScreenState extends State<EditorMetaDataScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+
     return isLoading
         ? CircularProgressIndicator()
         : Container(
@@ -62,20 +67,49 @@ class _EditorMetaDataScreenState extends State<EditorMetaDataScreen> {
                 FlatButton(
                   child: Text('Content page'),
                   onPressed: () {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    postMetaData(title.text, genre.text, email.text,
-                            facebook.text, twitter.text, github.text, tags.text)
-                        .then((value) {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => EditorContentPage(value),
-                      ));
-                    });
+                    if (!themeChange.isLogin)
+                      showDialogBox(context);
+                    else {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      postMetaData(
+                              title.text,
+                              genre.text,
+                              email.text,
+                              facebook.text,
+                              twitter.text,
+                              github.text,
+                              tags.text)
+                          .then((value) {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => EditorContentPage(value),
+                        ));
+                      });
+                    }
                   },
                 ),
               ],
             ),
           );
   }
+}
+
+void showDialogBox(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text("Attention !!"),
+        content: Text("u need to login for doing this"),
+        actions: [
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'))
+        ],
+      );
+    },
+  );
 }

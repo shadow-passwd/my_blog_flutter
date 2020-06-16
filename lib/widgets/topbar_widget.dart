@@ -37,9 +37,9 @@ class TopBar extends StatelessWidget {
           ),
           Row(
             children: [
-              IconButton(icon: Icon(Github.github), onPressed: null),
-              IconButton(icon: Icon(Twitter.twitter_bird), onPressed: null),
-              IconButton(icon: Icon(Icons.search), onPressed: null)
+              IconButton(icon: Icon(Github.github), onPressed: () {}),
+              IconButton(icon: Icon(Twitter.twitter_bird), onPressed: () {}),
+              IconButton(icon: Icon(Icons.search), onPressed: () {})
             ],
           )
         ],
