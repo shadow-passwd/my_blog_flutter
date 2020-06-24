@@ -24,7 +24,6 @@ class ImageLoad extends StatelessWidget {
                     child: Icon(
                       Icons.image,
                       size: 250.0,
-                      color: Theme.of(context).primaryColor,
                     ),
                   )
                 : Container(

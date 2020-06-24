@@ -11,7 +11,6 @@ import 'drawer.dart';
 import 'theme_switcher.dart';
 import 'navbar_widget.dart';
 import '../utils/sizing_information.dart';
-import '../model/user_login.dart';
 import 'display_page_widget.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -102,8 +101,13 @@ class _BaseScreenState extends State<BaseScreen>
                     (sizingInformation.deviceType == DeviceScreenType.Mobile)
                 ? AppBar()
                 : null,
-            drawer: myDrawer(sizingInformation.localWidgetSize, callback,
-                User.isLogin, isDrawerOpened, context, sizingInformation),
+            drawer: myDrawer(
+                sizingInformation.localWidgetSize,
+                callback,
+                themeChange.isLogin,
+                isDrawerOpened,
+                context,
+                sizingInformation),
             body: Container(
               child: Row(
                 children: [
@@ -127,7 +131,7 @@ class _BaseScreenState extends State<BaseScreen>
                                   : NavBar(
                                       sizingInformation.screenSize,
                                       callback,
-                                      User.isLogin,
+                                      themeChange.isLogin,
                                       size: buttonSize,
                                       currentRouteName: currentRouteName,
                                     ),

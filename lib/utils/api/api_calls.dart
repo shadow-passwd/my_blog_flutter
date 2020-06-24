@@ -1,19 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:my_awesome_blog/model/user.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:mime_type/mime_type.dart';
 // import 'package:path/path.dart' as Path;
 
 import 'package:image_picker_web/image_picker_web.dart';
 
 import 'package:http_parser/http_parser.dart';
-import 'package:my_awesome_blog/model/user_login.dart';
 
 import '../../model/post.dart';
 import '../../providers/editor_image_provider.dart';
 import '../../model/single_post.dart';
 import '../../constants/urls.dart';
-import '../../model/user.dart';
+
+launchURL(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 ///////////////////////////////////GET POST //////////////////////////////////////////
 
@@ -42,6 +50,8 @@ Future<int> postMetaData(
   String twitter,
   String github,
   String tags,
+  int userId,
+  String accessToken,
 ) async {
   String url = Urls.postUrl;
   Map<String, dynamic> headers = {
@@ -52,14 +62,14 @@ Future<int> postMetaData(
     "github_id_url": github,
     "twitter_id_url": twitter,
     "facebook_id_url": facebook,
-    'user': User.userId,
+    'user': userId,
   };
   try {
     var resp = await http.post(
       url,
       headers: {
         HttpHeaders.contentTypeHeader: "application/json",
-        HttpHeaders.authorizationHeader: "Bearer ${User.accessToken}"
+        HttpHeaders.authorizationHeader: "Bearer $accessToken"
       },
       body: JsonEncoder().convert(headers),
     );
@@ -74,11 +84,12 @@ Future<int> postMetaData(
 
 ///////////////////////////////////post CONTENTDATA //////////////////////////////////////////
 
-Future postContentData(String content, int postId) async {
+Future postContentData(
+    String content, int postId, int userId, String accessToken) async {
   String url = Urls.postUrl + '$postId/';
   Map<String, dynamic> headers = {
     'content': content,
-    'user': User.userId,
+    'user': userId,
   };
 
   try {
@@ -86,7 +97,7 @@ Future postContentData(String content, int postId) async {
       url,
       headers: {
         HttpHeaders.contentTypeHeader: "application/json",
-        HttpHeaders.authorizationHeader: "Bearer ${User.accessToken}"
+        HttpHeaders.authorizationHeader: "Bearer $accessToken"
       },
       body: JsonEncoder().convert(headers),
     );
@@ -98,7 +109,7 @@ Future postContentData(String content, int postId) async {
 
 ///////////////////////////////////post IMAGEDATA //////////////////////////////////////////
 
-Future postImageData(Images provider, int postId) async {
+Future postImageData(Images provider, int postId, String accessToken) async {
   String url = Urls.postImageUrl;
   Map<String, MediaInfo> _images = provider.data;
   var request = http.MultipartRequest("POST", Uri.parse(url));
@@ -115,8 +126,7 @@ Future postImageData(Images provider, int postId) async {
   });
   request.fields['post'] = '$postId';
   request.headers[HttpHeaders.contentTypeHeader] = 'application/json';
-  request.headers[HttpHeaders.authorizationHeader] =
-      "Bearer ${User.accessToken}";
+  request.headers[HttpHeaders.authorizationHeader] = "Bearer $accessToken";
 
   request
       .send()
@@ -213,9 +223,9 @@ Future userProfileCreation(
 
 ///////////////////////////////////USER REGISTRATION //////////////////////////////////////////
 
-Future futureUserRegistration(
+Future<http.Response> futureUserRegistration(
     String username, String email, String password) async {
-  String url = Urls.loginUrl;
+  String url = Urls.createUserUrl;
 
   Map<String, dynamic> headers = {
     "username": username,
@@ -238,6 +248,7 @@ Future<String> userRegistration(
     String username, String email, String password) async {
   var r = await futureUserRegistration(username, email, password);
   print(r.body);
+  print("asasasa" + r.statusCode.toString());
   return r.body;
 }
 

@@ -11,6 +11,8 @@ String singlePostToJson(SinglePost data) => json.encode(data.toJson());
 class SinglePost {
     SinglePost({
         this.id,
+        this.username,
+        this.userProfilePic,
         this.postCoverImage,
         this.title,
         this.genre,
@@ -28,7 +30,9 @@ class SinglePost {
     });
 
     int id;
-    String postCoverImage;
+    String username;
+    String userProfilePic;
+    dynamic postCoverImage;
     String title;
     String genre;
     String tags;
@@ -45,6 +49,8 @@ class SinglePost {
 
     factory SinglePost.fromJson(Map<String, dynamic> json) => SinglePost(
         id: json["id"],
+        username: json["username"],
+        userProfilePic: json["user_profile_pic"],
         postCoverImage: json["post_cover_image"],
         title: json["title"],
         genre: json["genre"],
@@ -63,6 +69,8 @@ class SinglePost {
 
     Map<String, dynamic> toJson() => {
         "id": id,
+        "username": username,
+        "user_profile_pic": userProfilePic,
         "post_cover_image": postCoverImage,
         "title": title,
         "genre": genre,

@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.12.1
+  universal_html: ^1.2.3
+
   shared_preferences: ^0.5.7+1
   provider: ^4.1.1
   flutter_markdown: ^0.3.5
@@ -22,6 +24,10 @@ dependencies:
   responsive_framework: ^0.0.7
   markdown_widget: ^1.2.0
   mime_type: ^0.3.1
+  animated_text_kit: ^2.2.0
+
+  url_launcher: ^5.4.11
+
 
 
 
@@ -96,4 +102,11 @@ flutter:
     - family:  Construction
       fonts:
         - asset: fonts/Construction.ttf
+    - family:  Facebook
+      fonts:
+        - asset: fonts/Facebook.ttf
+    - family:  Email
+      fonts:
+       - asset: fonts/Email.ttf
+        
        

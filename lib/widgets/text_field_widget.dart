@@ -10,6 +10,11 @@ class InputField extends StatelessWidget {
   final bool obscure;
   final IconData icon;
   final SizingInformation sizingInformation;
+  final labelText;
+  final Function validator;
+  final FocusNode focusNode;
+  final Function onFieldSubmitted;
+  final bool autoFocus;
   InputField(
     this.controller,
     this.hinttext, {
@@ -18,6 +23,11 @@ class InputField extends StatelessWidget {
     this.sizingInformation,
     this.obscure = false,
     this.icon,
+    this.labelText,
+    this.validator,
+    this.focusNode,
+    this.onFieldSubmitted,
+    this.autoFocus = false,
   });
 
   @override
@@ -26,28 +36,42 @@ class InputField extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(color: Colors.red, width: 2),
+      child: TextFormField(
+        
+        autofocus: autoFocus,
+        controller: controller,
+        focusNode: focusNode,
+        validator: (value) => validator(value),
+        minLines: minLines,
+        maxLines: maxLines,
+        obscureText: obscure,
+        textInputAction: TextInputAction.next,
+        onFieldSubmitted: (_) => onFieldSubmitted(),
+        style: TextStyle(
+          color: themeChange.darkTheme ? Colors.white : Colors.black,
         ),
-        child: TextField(
-          controller: controller,
-          minLines: minLines,
-          maxLines: maxLines,
-          obscureText: obscure,
-          style: TextStyle(
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(color: Colors.red, width: 2),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: Colors.red, width: 2),
+          ),
+          labelText: labelText,
+          labelStyle: TextStyle(
             color: themeChange.darkTheme ? Colors.white : Colors.black,
           ),
-          decoration: InputDecoration(
-            icon: Icon(icon),
-            hintStyle: TextStyle(
-              color: themeChange.darkTheme ? Colors.white : Colors.black,
-            ),
-            hintText: hinttext,
-            border: InputBorder.none,
+          filled: true,
+          prefixIcon: Icon(
+            icon,
           ),
+          hintStyle: TextStyle(
+            color: themeChange.darkTheme ? Colors.white : Colors.black,
+          ),
+          hintText: hinttext,
+          border: InputBorder.none,
         ),
       ),
     );

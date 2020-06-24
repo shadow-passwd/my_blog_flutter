@@ -4,51 +4,54 @@
 
 import 'dart:convert';
 
-List<Post> postFromJson(String str) =>
-    List<Post>.from(json.decode(str).map((x) => Post.fromJson(x)));
+List<Post> postFromJson(String str) => List<Post>.from(json.decode(str).map((x) => Post.fromJson(x)));
 
-String postToJson(List<Post> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String postToJson(List<Post> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Post {
-  Post({
-    this.id,
-    this.postCoverImage,
-    this.title,
-    this.genre,
-    this.tags,
-    this.content,
-    this.likes,
-    this.emailIdUrl,
-    this.githubIdUrl,
-    this.twitterIdUrl,
-    this.facebookIdUrl,
-    this.datePosted,
-    this.updatedOn,
-    this.slug,
-    this.user,
-  });
+    Post({
+        this.id,
+        this.username,
+        this.userProfilePic,
+        this.postCoverImage,
+        this.title,
+        this.genre,
+        this.tags,
+        this.content,
+        this.likes,
+        this.emailIdUrl,
+        this.githubIdUrl,
+        this.twitterIdUrl,
+        this.facebookIdUrl,
+        this.datePosted,
+        this.updatedOn,
+        this.slug,
+        this.user,
+    });
 
-  int id;
-  String postCoverImage;
-  String title;
-  String genre;
-  String tags;
-  String content;
-  int likes;
-  String emailIdUrl;
-  String githubIdUrl;
-  String twitterIdUrl;
-  String facebookIdUrl;
-  DateTime datePosted;
-  DateTime updatedOn;
-  String slug;
-  int user;
+    int id;
+    String username;
+    String userProfilePic;
+    String postCoverImage;
+    String title;
+    String genre;
+    String tags;
+    String content;
+    int likes;
+    String emailIdUrl;
+    String githubIdUrl;
+    String twitterIdUrl;
+    String facebookIdUrl;
+    DateTime datePosted;
+    DateTime updatedOn;
+    String slug;
+    int user;
 
-  factory Post.fromJson(Map<String, dynamic> json) => Post(
+    factory Post.fromJson(Map<String, dynamic> json) => Post(
         id: json["id"],
-        postCoverImage:
-            json["post_cover_image"] == null ? null : json["post_cover_image"],
+        username: json["username"],
+        userProfilePic: json["user_profile_pic"],
+        postCoverImage: json["post_cover_image"] == null ? null : json["post_cover_image"],
         title: json["title"],
         genre: json["genre"],
         tags: json["tags"],
@@ -62,10 +65,12 @@ class Post {
         updatedOn: DateTime.parse(json["updated_on"]),
         slug: json["slug"],
         user: json["user"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "id": id,
+        "username": username,
+        "user_profile_pic": userProfilePic,
         "post_cover_image": postCoverImage == null ? null : postCoverImage,
         "title": title,
         "genre": genre,
@@ -80,5 +85,5 @@ class Post {
         "updated_on": updatedOn.toIso8601String(),
         "slug": slug,
         "user": user,
-      };
+    };
 }

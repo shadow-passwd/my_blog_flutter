@@ -8,7 +8,7 @@ class Urls {
   static const String getUsersUrl = "";
   static const String getSingleUserUrl = BASE_URL + "api/accounts/profile/";
   static const String postUrl = BASE_URL + "api/post/";
-  static const String createUserUrl = "";
+  static const String createUserUrl = BASE_URL + "auth/users/";
   static const String createUserProfileUrl =
       BASE_URL + "api/accounts/allprofiles";
   static const String postImageUrl = BASE_URL + "api/images/";

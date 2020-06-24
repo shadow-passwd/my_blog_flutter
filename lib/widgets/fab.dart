@@ -8,6 +8,7 @@ Widget myFab(DarkThemeProvider themeChange, BuildContext context,
   return (sizingInformation.deviceType == DeviceScreenType.Tablet) ||
           (sizingInformation.deviceType == DeviceScreenType.Mobile)
       ? FloatingActionButton(
+        
           child: Icon(
               themeChange.darkTheme ? Icons.brightness_3 : Icons.brightness_5),
           onPressed: () {

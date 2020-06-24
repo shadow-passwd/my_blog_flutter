@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:my_awesome_blog/providers/dark_theme_provider.dart';
 
 import '../ui/editor/image_load.dart';
 import 'text_field_widget.dart';
@@ -67,6 +68,8 @@ class _BuildEditorState extends State<BuildEditor> {
   }
 
   Center buildWiget(Images provider, int postId) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+
     return Center(
       child: isLoading
           ? CircularProgressIndicator()
@@ -83,7 +86,8 @@ class _BuildEditorState extends State<BuildEditor> {
                         setState(() {
                           isLoading = true;
                         });
-                        postImageData(provider, postId).then((value) {
+                        postImageData(provider, postId, themeChange.accessToken)
+                            .then((value) {
                           setState(() {
                             isLoading = false;
                           });
@@ -93,18 +97,21 @@ class _BuildEditorState extends State<BuildEditor> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: InputField(
-                          content,
-                          "Content",
-                          minLines: 4,
-                          maxLines: null,
+                        child: Container(
+                          height: 1000,
+                          child: InputField(
+                            content,
+                            "Content",
+                            minLines: 100,
+                            maxLines: null,
+                          ),
                         ),
                       ),
                       VerticalDivider(),
                       Expanded(
                           flex: 1,
                           child: Container(
-                            height: 200,
+                            height: 1000,
                             decoration: BoxDecoration(
                                 border:
                                     Border.all(width: 2, color: Colors.pink)),
@@ -136,7 +143,12 @@ class _BuildEditorState extends State<BuildEditor> {
                       setState(() {
                         isLoading = true;
                       });
-                      postContentData(content.text, postId).then((value) {
+                      postContentData(
+                        content.text,
+                        postId,
+                        themeChange.userId,
+                        themeChange.accessToken,
+                      ).then((value) {
                         isLoading = false;
                       });
                     },

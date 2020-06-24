@@ -42,7 +42,12 @@ class BuildAnimationBulb extends StatelessWidget {
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30)),
                   shape: BoxShape.rectangle,
-                  color: Theme.of(context).hoverColor,
+                  color: Theme.of(context)
+                      .copyWith(
+                          hoverColor: themeChange.darkTheme
+                              ? Color(0xff3A3A3B)
+                              : Color(0xff4285F4))
+                      .hoverColor,
                 ),
               ),
             ),

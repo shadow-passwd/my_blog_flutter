@@ -35,6 +35,7 @@ class DarkThemeProvider with ChangeNotifier {
     _userId = userId;
     _accessToken = accessToken;
     _expiryTime = expiryTime;
+    _username = username;
     notifyListeners();
     startTimer();
   }
@@ -48,12 +49,22 @@ class DarkThemeProvider with ChangeNotifier {
   }
 
   void startTimer() async {
-    Timer(Duration(seconds: 70 - 60), () {
+    Timer(Duration(seconds: _expiryTime - 60), () {
       if (_isLogin) {
         print("TIME EXPIRED");
 
         showDialogBox();
         unSetLoginValues();
+      }
+    });
+  }
+
+  void startBeforeExpiryTime() async {
+    Timer(Duration(seconds: 70 - 60), () {
+      if (_isLogin) {
+        print("TIME EXPIRED");
+
+        showDialogBox();
       }
     });
   }
